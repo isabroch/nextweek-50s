@@ -1,0 +1,92 @@
+.wrapper {
+  max-width: 1000px;
+  padding: 20px;
+}
+
+header {
+  background: rgb(244, 226, 128);
+}
+
+.menu {
+
+  a {
+    color: rgb(255, 255, 255);
+
+  }
+
+  li {
+
+    text-shadow: 0 0 10px rgba(249, 193, 193, 1);
+  }
+}
+
+// footer styling
+
+footer {
+  background: rgb(249, 193, 193);
+}
+
+.parallax {
+  height: 95vh;
+}
+
+h2 {
+  font-size: 3rem;
+}
+
+.framed-box {
+  border: 1px solid rgb(53, 53, 53);
+
+  h2 {
+    background: rgb(155, 216, 201);
+    font-size: 3rem;
+  }
+}
+
+
+.info {
+  background: RGBA(249, 193, 193, 0.8);
+  padding: 20px;
+}
+
+.team_portrait {
+  flex-basis: 50%;
+
+  &.yellow p {
+    background: RGBA(244, 226, 128, 0.8);
+  }
+
+  &.blue p {
+    background: RGBA(155, 216, 201, 0.8);
+  }
+
+  &.pink p {
+    background: RGBA(249, 193, 193, 0.8);
+  }
+
+  @media (min-width: 640px) {
+    flex-basis: 25%;
+  }
+
+  p {
+    width: 90%
+  }
+}
+
+.arrow {
+  svg {
+    stroke: rgb(255, 255, 255);
+  }
+}
+
+.dot {
+  background: rgb(255, 255, 255);
+}
+
+.full-width {
+  min-width: 100%;
+}
+
+.team-flex {
+  flex-wrap: wrap;
+}

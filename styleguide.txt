@@ -1,0 +1,17 @@
+FONTS
+18 / 21 bold 700
+48 / 56 light 300
+48 / 56 regular 400
+
+COLORS
+light yellow - #F9F0BF
+mid yellow - #F4E280
+pink - #F9C1C1
+black - #353535
+blue - #9BD8C9
+
+MARGIN + PADDING
+20px
+
+MAXWIDTH
+1000px
