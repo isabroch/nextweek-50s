@@ -186,14 +186,14 @@ nav {
   transition: transform 0.2s, -webkit-transform 0.2s;
 }
 
-.menu li:hover {
+.menu li:hover, .menu li.active {
   -webkit-transform: scale(1.2);
           transform: scale(1.2);
   text-shadow: 0 0 10px #f9c1c1;
   text-shadow: 0 0 10px RGBA(var(--rgb-pink), 1);
 }
 
-@media (max-width: 639px) {
+@media (max-width: 750px) {
   .menu {
     display: none;
   }
@@ -229,21 +229,12 @@ footer .flex {
   scroll-behavior: smooth;
 }
 
-@media (min-width: 640px) {
-  .parallax {
-    -webkit-transform-style: preserve-3d;
-            transform-style: preserve-3d;
-  }
-}
-
 .parallax_group {
   position: relative;
   top: -20px;
   top: calc(-1 * var(--space));
   width: 100vw;
   margin: 0 auto;
-  -webkit-perspective: 1px;
-          perspective: 1px;
 }
 
 @media (max-width: 639px) {
@@ -258,10 +249,6 @@ footer .flex {
   .parallax_group {
     height: 90vh;
     width: 70%;
-    -webkit-transform-style: preserve-3d;
-            transform-style: preserve-3d;
-    -webkit-perspective: 1px;
-            perspective: 1px;
   }
 }
 
@@ -270,19 +257,6 @@ footer .flex {
     height: 100vh;
     overflow: hidden;
     margin-top: -90px;
-    -webkit-transform-style: preserve-3d;
-            transform-style: preserve-3d;
-  }
-}
-
-@media (min-width: 640px) {
-  .chromewindows {
-    -webkit-perspective: 1px;
-            perspective: 1px;
-  }
-  .chromewindows .parallax_group {
-    -webkit-perspective: initial;
-            perspective: initial;
   }
 }
 
@@ -295,8 +269,6 @@ footer .flex {
 @media (min-width: 640px) {
   .hero {
     display: block;
-    -webkit-transform-style: preserve-3d;
-            transform-style: preserve-3d;
   }
 }
 
@@ -312,31 +284,23 @@ footer .flex {
 }
 
 ._lights {
-  top: -200vh;
-  -webkit-transform: translateZ(-5px) scale(7);
-          transform: translateZ(-5px) scale(7);
   z-index: 18;
 }
 
 ._seats {
-  top: 115%;
-  -webkit-transform: translateZ(-2px) scale(3);
-          transform: translateZ(-2px) scale(3);
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
   z-index: 19;
 }
 
 ._bar {
-  top: 100%;
-  -webkit-transform: translateZ(-3px) scale(5);
-          transform: translateZ(-3px) scale(5);
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
   z-index: 15;
 }
 
 ._title {
-  bottom: 125%;
   text-align: center;
-  -webkit-transform: translateZ(-4px) scale(5);
-          transform: translateZ(-4px) scale(5);
   z-index: 12;
 }
 
@@ -346,9 +310,8 @@ footer .flex {
 }
 
 ._wall {
-  top: -70vh;
-  -webkit-transform: translateX(-50%) translateZ(-5px) scale(6);
-          transform: translateX(-50%) translateZ(-5px) scale(6);
+  -webkit-transform: translateX(-50%);
+          transform: translateX(-50%);
   margin-left: 50%;
   width: 100vw;
   height: 76%;
@@ -392,6 +355,10 @@ section.fotos {
   top: 0;
 }
 
+.anchor#moreinfo {
+  top: -110px;
+}
+
 h2 {
   text-transform: uppercase;
   font-size: 3rem;
@@ -400,30 +367,36 @@ h2 {
 
 .framed-box {
   position: relative;
+  max-width: 75%;
+  margin-left: auto;
+  margin-right: auto;
   border: 1px solid #353535;
   border: 1px solid var(--c-black);
-  padding: 2rem 2rem 1rem;
+  padding: 2rem 2rem 1rem 2.5rem;
 }
 
 .framed-box h2 {
   position: absolute;
-  top: -34px;
-  white-space: nowrap;
+  -webkit-transform: translateY(-90%);
+          transform: translateY(-90%);
   left: 3%;
   margin: 0;
   background: #9bd8c9;
   background: var(--c-blue);
   width: 94%;
   text-align: center;
-  font-size: 3rem;
-  font-size: var(--f-titles);
+  font-size: 2.5rem;
   font-weight: 100;
 }
 
 @media (min-width: 640px) {
   .framed-box h2 {
-    left: 25%;
-    max-width: 50%;
+    font-size: 3rem;
+    font-size: var(--f-titles);
+    -webkit-transform: translateY(-110%);
+            transform: translateY(-110%);
+    left: 10%;
+    max-width: 80%;
   }
 }
 
@@ -444,7 +417,7 @@ h2 {
   }
 }
 
-.dotted-bg::before {
+.dotted-box {
   position: absolute;
   background: url("resources/polkadot.svg");
   background-size: 1.1rem;
@@ -458,30 +431,30 @@ h2 {
 }
 
 @media (min-width: 640px) {
-  .dotted-bg::before {
+  .dotted-box {
     top: -20%;
     height: 160%;
   }
 }
 
-.dotted-bg.left::before {
+.dotted-bg.left .dotted-box {
   left: 0;
   margin-left: -6%;
 }
 
 @media (min-width: 640px) {
-  .dotted-bg.left::before {
+  .dotted-bg.left .dotted-box {
     margin-left: -20%;
   }
 }
 
-.dotted-bg.right::before {
+.dotted-bg.right .dotted-box {
   right: 0;
   margin-right: -6%;
 }
 
 @media (min-width: 640px) {
-  .dotted-bg.right::before {
+  .dotted-bg.right .dotted-box {
     margin-right: -10%;
   }
 }
@@ -502,6 +475,7 @@ h2 {
   width: 100%;
   min-height: 150px;
   position: relative;
+  cursor: pointer;
 }
 
 .img {
@@ -677,4 +651,82 @@ h2 {
   top: 0;
   left: 0;
   z-index: 5;
+}
+
+.lightbox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 100vh;
+  background: rgba(53, 53, 53, 0.7);
+  background: RGBA(var(--rgb-black), 0.7);
+  padding: 2rem;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  opacity: 1;
+  -webkit-transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease;
+}
+
+.lightbox.hidden {
+  opacity: 0;
+}
+
+.image-wrapper {
+  position: relative;
+}
+
+.lightbox-image {
+  position: relative;
+  max-height: 90vh;
+  width: initial;
+  -o-object-fit: contain;
+     object-fit: contain;
+  -webkit-box-shadow: 0 0 10px #353535;
+          box-shadow: 0 0 10px #353535;
+  -webkit-box-shadow: 0 0 10px var(--c-black);
+          box-shadow: 0 0 10px var(--c-black);
+}
+
+.lightbox-close {
+  position: absolute;
+  background: RGBA(155, 216, 201, 0.8);
+  background: RGBA(var(--rgb-blue), 0.8);
+  border-radius: 100%;
+  width: 2rem;
+  right: -1rem;
+  top: -1rem;
+  -webkit-transition: -webkit-transform 0.2s ease;
+  transition: -webkit-transform 0.2s ease;
+  transition: transform 0.2s ease;
+  transition: transform 0.2s ease, -webkit-transform 0.2s ease;
+  cursor: pointer;
+}
+
+.lightbox-close:hover {
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2);
+}
+
+.lightbox-close:active {
+  -webkit-transform: scale(0.9);
+          transform: scale(0.9);
+}
+
+.lightbox-close:focus {
+  outline: none;
+}
+
+strong {
+  display: block;
+  margin: 1.5em 0 -0.5em;
 }

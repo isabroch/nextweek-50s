@@ -1,20 +1,3 @@
-/* Functions list
-parallaxInChrome();
-
-*/
-
-// If user is on Chrome on Windows, use parallax CSS technique.
-function parallaxInChrome() {
-  const os = window.navigator.platform;
-  const browser = navigator.userAgent;
-
-  console.log(os, browser)
-
-  if (os.match(/win/gi) && browser.match(/chrome/gi)) {
-    document.querySelector('.parallax').classList.add('chromewindows');
-  }
-}
-
 // Photo series with left-right capabilities on click or keypress
 const mainImages = document.querySelectorAll('.main-image');
 let index = [0, 0];
@@ -73,7 +56,7 @@ function indexChange(num, isIndex, elem) {
 
   image.classList.add('fadeout');
 
-  setTimeout(function() {
+  setTimeout(function () {
     image.src = currentImage;
 
     [...dots.children].forEach(dot => {
@@ -83,7 +66,7 @@ function indexChange(num, isIndex, elem) {
     dots.children[index[x]].classList.add('active');
   }, 300);
 
-  setTimeout(function() {
+  setTimeout(function () {
     image.classList.remove('fadeout');
   }, 350);
 }
@@ -153,12 +136,40 @@ function indexChangeByKeyboard(e) {
   pauseSlideshow();
 }
 
+// Light box
+function lightbox(e) {
+  if (!e.target.classList.contains('new-photo')) {
+    return
+  };
+
+  const wrapper = document.querySelector('.lightbox');
+  const image = document.querySelector('.lightbox-image');
+
+  image.src = e.target.src;
+
+  wrapper.style.display = '';
+
+  setTimeout(() => {
+    wrapper.classList.remove('hidden');
+  }, 200);
+}
+
+function lightboxExit(e) {
+  const wrapper = document.querySelector('.lightbox');
+
+  if (e.target.classList.contains('lightbox-image')) {
+    return;
+  }
+
+  wrapper.classList.add('hidden');
+  setTimeout(() => {
+    wrapper.style.display = 'none';
+  }, 200);
+}
 
 // Auto run slideshow
-
 let slideshowDelay; // how many seconds before going to next photo?
 let slideshowPaused;
-let isWaiting = false;
 
 function slideshow() {
   slideshowDelay = setInterval(
@@ -170,22 +181,139 @@ function slideshow() {
 }
 
 function pauseSlideshow() {
-  isWaiting = true;
   console.log('Waiting 6 seconds!');
   clearInterval(slideshowDelay);
   clearTimeout(slideshowPaused);
 
-  slideshowPaused = setTimeout(function() {
+  slideshowPaused = setTimeout(function () {
     console.log('Starting slideshow again.');
     slideshow();
   }, 6000);
 }
 
+// JS Parallax Version
+let scrolled = 0;
+
+function jsParallax() {
+  scrolled = document.querySelector('.parallax').scrollTop;
+
+  if (window.outerWidth < 640) {
+    return;
+  }
+
+  // For hero image at top
+  const lights = document.querySelector('._lights');
+  const seats = document.querySelector('._seats');
+  const wall = document.querySelector('._wall');
+  const title = document.querySelector('._title');
+  const bar = document.querySelector('._bar');
+
+  let lightsTop = 10 + (scrolled * 0.08);
+  lights.style.top = lightsTop + '%';
+
+  let seatsTop = 69 + (scrolled * 0.01);
+  seats.style.top = seatsTop + '%';
+
+  let wallTop = 0 + (scrolled * 0.04);
+  wall.style.top = wallTop + '%';
+
+  let titleTop = 32 + (scrolled * 0.06);
+  title.style.top = titleTop + '%';
+
+  let barTop = 60 + (scrolled * 0.02);
+  bar.style.top = barTop + '%';
+
+  // For sections later down the page.
+
+  /* Due to the depth of the elements, getting the exact distance from the top of the wrapper (dvs. the exact amount to scroll from top) is done by getting offsetTop (distance between top of el to top of parent) of the offsetParents and adding them together.
+
+  This is used to offset the scroll effect so that elements that come later on in the page aren't WILDLY offbase, and must be done responsively due to different distances from top depending on window size. */
+
+  const dots = document.querySelectorAll('.dotted-box');
+  const framedBoxes = document.querySelectorAll('.framed-box');
+
+  dots.forEach(el => {
+    dotsScrolled = scrolled - (el.offsetTop +
+      el.offsetParent.offsetTop +
+    el.offsetParent.offsetParent.offsetParent.offsetTop);
+
+    let dotsTop = -120 - (dotsScrolled * 0.1);
+    el.style.top = dotsTop + 'px';
+  });
+
+  framedBoxes.forEach(el => {
+    frameScrolled = scrolled - (el.offsetTop +
+      el.offsetParent.offsetParent.offsetTop);
+
+    let framesTop = -100 - (frameScrolled * 0.15);
+    el.style.top = framesTop + 'px';
+  });
+}
+
+
+// Nav highlight
+// Set active to the section in nav depending on scroll. First function is to create an array from all the current anchors on page and to add event listening to the scrolling div.
+function setupAnchors() {
+  const anchors = document.querySelectorAll('.anchor');
+  const anchorsArray = [];
+
+  anchors.forEach(anchor => {
+    const pos = anchor.getBoundingClientRect().top;
+    const elem = [...anchors].indexOf(anchor);
+    const menuLink = document.querySelectorAll('.menu li')[elem];
+
+    anchorsArray.push([menuLink, pos]);
+  });
+
+  console.log(anchorsArray);
+
+  document.querySelector('.parallax').addEventListener('scroll', function (e) {
+    navHighlight(anchorsArray);
+  });
+}
+
+/* Uses array from previous function.
+When the user has scrolled past the anchor by at least [random value] (this is finetuned to allow at least 1/4 of the section to be visible), the corresponding navigation link in the header will be 'active'. */
+function navHighlight(anchorsArray) {
+  let scrolledBot = (scrolled + document.querySelector('.parallax').offsetHeight) / 1.2;
+
+  anchorsArray.forEach(currentItem => {
+    currentItem[0].classList.remove('active');
+  });
+
+  if (scrolledBot < anchorsArray[1][1]) {
+    anchorsArray[0][0].classList.add('active');
+  } else if (scrolledBot < anchorsArray[2][1]) {
+    anchorsArray[1][0].classList.add('active');
+  } else if (scrolledBot < anchorsArray[3][1]) {
+    anchorsArray[2][0].classList.add('active');
+  } else if (scrolledBot < anchorsArray[4][1]) {
+    anchorsArray[3][0].classList.add('active');
+  } else if (scrolledBot < anchorsArray[5][1]) {
+    anchorsArray[4][0].classList.add('active');
+  } else if (scrolledBot < anchorsArray[6][1]) {
+    anchorsArray[5][0].classList.add('active');
+  } else {
+    anchorsArray[6][0].classList.add('active');
+  }
+}
+
 // Run all functions
 generateDots();
-parallaxInChrome();
 mainImages.forEach(image => {
   photoSeries(image);
+  image.addEventListener('click', lightbox);
 });
-window.addEventListener('keydown', indexChangeByKeyboard);
+setupAnchors();
+window.addEventListener('keydown', function (e) {
+  indexChangeByKeyboard(e);
+
+  if (e.key == 'Escape') {
+    lightboxExit(e);
+  }
+});
 slideshow();
+document.querySelector('.parallax').addEventListener('scroll', function (e) {
+  jsParallax();
+});
+document.querySelector('.lightbox').addEventListener('click', lightboxExit);
