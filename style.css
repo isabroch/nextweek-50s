@@ -367,6 +367,10 @@ h2 {
 
 .framed-box {
   position: relative;
+}
+
+.framed-wrapper {
+  position: relative;
   max-width: 75%;
   margin-left: auto;
   margin-right: auto;
@@ -375,7 +379,7 @@ h2 {
   padding: 2rem 2rem 1rem 2.5rem;
 }
 
-.framed-box h2 {
+.framed-wrapper h2 {
   position: absolute;
   -webkit-transform: translateY(-90%);
           transform: translateY(-90%);
@@ -390,7 +394,7 @@ h2 {
 }
 
 @media (min-width: 640px) {
-  .framed-box h2 {
+  .framed-wrapper h2 {
     font-size: 3rem;
     font-size: var(--f-titles);
     -webkit-transform: translateY(-110%);
@@ -633,8 +637,8 @@ h2 {
 
 .new-photo {
   opacity: 1;
-  -webkit-transition: opacity 0.4s;
-  transition: opacity 0.4s;
+  -webkit-transition: opacity 1s;
+  transition: opacity 1s;
 }
 
 .new-photo.fadeout {

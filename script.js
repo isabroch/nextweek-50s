@@ -2,9 +2,11 @@
 const mainImages = document.querySelectorAll('.main-image');
 let index = [0, 0];
 
+// [ [ALBUM 1], [ALBUM 2] ]
+// [[ [THUMBNAIL, LARGE IMG] ]
 const imagesArray = [
-  ['http://picsum.photos/900/500?random=1', 'http://picsum.photos/900/500?random=2', 'http://picsum.photos/900/500?random=3'],
-  ['http://picsum.photos/900/500?random=4', 'http://picsum.photos/900/500?random=5', 'http://picsum.photos/900/500?random=6', 'http://picsum.photos/900/500?random=7']
+  [['http://picsum.photos/900/500?random=1', 'http://picsum.photos/1000/550?random=1'], ['http://picsum.photos/900/500?random=2', 'http://picsum.photos/1000/550?random=2'], ['http://picsum.photos/900/500?random=3', 'http://picsum.photos/1000/550?random=3']],
+  [['http://picsum.photos/900/500?random=1', 'http://picsum.photos/1000/550?random=1'], ['http://picsum.photos/900/500?random=1', 'http://picsum.photos/1000/550?random=1'], ['http://picsum.photos/900/500?random=1', 'http://picsum.photos/1000/550?random=1']]
 ];
 
 function generateDots() {
@@ -50,25 +52,26 @@ function indexChange(num, isIndex, elem) {
   // set old-photo to current src for smooth transition!
   elem.querySelector('.old-photo').src = elem.querySelector('.new-photo').src;
 
-  // const currentImage = `resources/${imagesArray[x][index[x]]}`;
   const currentImage = imagesArray[x][index[x]];
   const image = elem.querySelector('.new-photo');
+
+  const imageThumb = `${currentImage[0]}`;
+  const imageLarge = `${currentImage[1]}`;
 
   image.classList.add('fadeout');
 
   setTimeout(function () {
-    image.src = currentImage;
+    image.src = imageThumb;
+    image.dataset.largesrc = imageLarge;
 
     [...dots.children].forEach(dot => {
       dot.classList.remove('active');
     });
 
     dots.children[index[x]].classList.add('active');
-  }, 300);
 
-  setTimeout(function () {
     image.classList.remove('fadeout');
-  }, 350);
+  }, 500);
 }
 
 function photoSeries(elem) {
@@ -145,7 +148,7 @@ function lightbox(e) {
   const wrapper = document.querySelector('.lightbox');
   const image = document.querySelector('.lightbox-image');
 
-  image.src = e.target.src;
+  image.src = e.target.dataset.largesrc;
 
   wrapper.style.display = '';
 
@@ -177,7 +180,7 @@ function slideshow() {
       console.log('5 second!');
       indexChange(1, false, document.querySelector('#fotos.anchor').parentElement.querySelector('.main-image'))
       indexChange(1, false, document.querySelector('#process.anchor').parentElement.querySelector('.main-image'));
-    }, 2000);
+    }, 5000);
 }
 
 function pauseSlideshow() {
@@ -230,22 +233,23 @@ function jsParallax() {
   This is used to offset the scroll effect so that elements that come later on in the page aren't WILDLY offbase, and must be done responsively due to different distances from top depending on window size. */
 
   const dots = document.querySelectorAll('.dotted-box');
-  const framedBoxes = document.querySelectorAll('.framed-box');
+  const framedBoxes = document.querySelectorAll('.framed-wrapper');
 
   dots.forEach(el => {
-    dotsScrolled = scrolled - (el.offsetTop +
+    let dotsScrolled = scrolled - (el.offsetTop +
       el.offsetParent.offsetTop +
     el.offsetParent.offsetParent.offsetParent.offsetTop);
 
-    let dotsTop = -120 - (dotsScrolled * 0.1);
+    let dotsTop = -100 - (dotsScrolled * 0.1);
     el.style.top = dotsTop + 'px';
   });
 
   framedBoxes.forEach(el => {
-    frameScrolled = scrolled - (el.offsetTop +
+    let frameScrolled = scrolled - (el.offsetTop +
+      el.offsetParent.offsetTop +
       el.offsetParent.offsetParent.offsetTop);
 
-    let framesTop = -100 - (frameScrolled * 0.15);
+    let framesTop = -100 - (frameScrolled * 0.2);
     el.style.top = framesTop + 'px';
   });
 }

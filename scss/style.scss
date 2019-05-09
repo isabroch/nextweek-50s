@@ -299,6 +299,10 @@
 
   .framed-box {
     position: relative;
+  }
+
+  .framed-wrapper {
+    position: relative;
     max-width: 75%;
     margin-left: auto;
     margin-right: auto;
@@ -494,10 +498,12 @@
     }
 
     &.left {
+      // filter: drop-shadow(-1px 0 2px black);
       left: 0;
     }
 
     &.right {
+      // filter: drop-shadow(1px 0 2px black);
       right: 0;
     }
   }
@@ -531,7 +537,7 @@
   // fade effect on slideshow/images
   .new-photo {
     opacity: 1;
-    transition: opacity 0.4s;
+    transition: opacity 1s;
   }
 
   .new-photo.fadeout {
