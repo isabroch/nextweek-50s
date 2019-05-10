@@ -326,8 +326,8 @@
 
       @media (min-width: 640px) {
         font-size: 3rem;
-      font-size: var(--f-titles);
-      transform: translateY(-110%);
+        font-size: var(--f-titles);
+        transform: translateY(-110%);
         left: 10%;
         max-width: 80%;
       }
@@ -396,6 +396,42 @@
     min-height: 150px;
     position: relative;
     cursor: pointer;
+  }
+
+  .fotos_image {
+    .new-photo-wrapper {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      max-width: 840px;
+      max-height: 466px;
+    }
+
+    .new-photo, .old-photo {
+      background: white;
+       height: 100%;
+       object-fit: contain;
+      }
+  }
+
+  .img-wrapper {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .process_image {
+    .new-photo-wrapper {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      max-width: 480px;
+      max-height: 320px;
+    }
+
+    .new-photo, .old-photo {
+      background: black;
+      height: 100%;
+      object-fit: contain;}
   }
 
   .img {
@@ -493,8 +529,8 @@
 
     svg {
       transform: scale(2);
-      stroke: rgb(255, 255, 255);
-      stroke: var(--c-white);
+      stroke: RGB(155, 216, 201);
+      stroke: var(--c-blue);
     }
 
     &.left {
@@ -584,12 +620,29 @@
   }
 
   .lightbox-image {
-    position: relative;
     max-height: 90vh;
-    width: initial;
+    max-width: 80vw;
     object-fit: contain;
-    box-shadow: 0 0 10px rgb(53, 53, 53);
-    box-shadow: 0 0 10px var(--c-black);
+
+    &.new-photo {
+      position: relative;
+    }
+
+    &.old-photo {
+      position: absolute;
+      filter: drop-shadow(0 0 10px rgb(53, 53, 53));
+      filter: drop-shadow(0 0 10px rgb(53, 53, 53));
+    }
+  }
+
+  .--lightbox-arrow {
+    &.left {
+      left: -7%;
+    }
+
+    &.right {
+      right: -7%;
+    }
   }
 
   .lightbox-close {
@@ -601,6 +654,7 @@
     right: -1rem;
     top: -1rem;
     transition: transform 0.2s ease;
+    z-index: 100;
     cursor: pointer;
 
     &:hover {
@@ -618,5 +672,5 @@
 
   strong {
     display: block;
-    margin: 1.5em 0 -0.5em ;
+    margin: 1.5em 0 -0.5em;
   }

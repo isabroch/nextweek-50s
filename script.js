@@ -5,9 +5,23 @@ let index = [0, 0];
 // [ [ALBUM 1], [ALBUM 2] ]
 // [[ [THUMBNAIL, LARGE IMG] ]
 const imagesArray = [
-  [['http://picsum.photos/900/500?random=1', 'http://picsum.photos/1000/550?random=1'], ['http://picsum.photos/900/500?random=2', 'http://picsum.photos/1000/550?random=2'], ['http://picsum.photos/900/500?random=3', 'http://picsum.photos/1000/550?random=3']],
-  [['http://picsum.photos/900/500?random=1', 'http://picsum.photos/1000/550?random=1'], ['http://picsum.photos/900/500?random=1', 'http://picsum.photos/1000/550?random=1'], ['http://picsum.photos/900/500?random=1', 'http://picsum.photos/1000/550?random=1']]
+  [
+    ["resources/model1thumb.jpg", "resources/model1.jpg"],
+    ["resources/model2thumb.jpg", "resources/model2.jpg"],
+    ["resources/model3thumb.jpg", "resources/model3.jpg"],
+    ["resources/model4thumb.jpg", "resources/model4.jpg"],
+    ["resources/model5thumb.jpg", "resources/model5.jpg"]
+  ],
+  [
+    ["resources/process1thumb.jpg", "resources/process1.jpg"],
+    ["resources/process2thumb.jpg", "resources/process2.jpg"],
+    ["resources/process3thumb.jpg", "resources/process3.jpg"],
+    ["resources/process4thumb.jpg", "resources/process4.jpg"],
+    ["resources/process5thumb.jpg", "resources/process5.jpg"]
+  ]
 ];
+
+const allImagesArray = imagesArray.flat().map(el => el[1]);
 
 function generateDots() {
   mainImages.forEach(elem => {
@@ -15,7 +29,9 @@ function generateDots() {
     const wrapper = elem.querySelector('.dot-wrapper');
 
     // Set first image to first in array
-    elem.querySelector('.new-photo').setAttribute('src', imagesArray[x][index[x]]);
+    elem.querySelector('.new-photo').setAttribute('src', imagesArray[x][index[x]][0]);
+    elem.querySelector('.new-photo').setAttribute('data-largesrc', imagesArray[x][index[x]][1]);
+    elem.querySelector('.old-photo').setAttribute('src', imagesArray[x][index[x]][0]);
 
     // Create a dot for each image in the array
     for (let i = 0; i < imagesArray[x].length; i++) {
@@ -49,9 +65,6 @@ function indexChange(num, isIndex, elem) {
     }
   }
 
-  // set old-photo to current src for smooth transition!
-  elem.querySelector('.old-photo').src = elem.querySelector('.new-photo').src;
-
   const currentImage = imagesArray[x][index[x]];
   const image = elem.querySelector('.new-photo');
 
@@ -59,6 +72,8 @@ function indexChange(num, isIndex, elem) {
   const imageLarge = `${currentImage[1]}`;
 
   image.classList.add('fadeout');
+
+
 
   setTimeout(function () {
     image.src = imageThumb;
@@ -72,6 +87,10 @@ function indexChange(num, isIndex, elem) {
 
     image.classList.remove('fadeout');
   }, 500);
+
+  // set old-photo to current src for smooth transition!
+  elem.querySelector('.old-photo').src = imageThumb;
+
 }
 
 function photoSeries(elem) {
@@ -116,7 +135,19 @@ function indexChangeByKeyboard(e) {
   // console.log(fotosTop, fotosBot);
   // console.log(processTop, processBot);
 
-  if (scrollPosBot >= fotosTop && scrollPosTop <= fotosBot) {
+  const lightbox = document.querySelector('.lightbox');
+
+  if (lightbox.style.display != 'none') {
+    console.log('lightbox');
+    switch (e.key) {
+      case 'ArrowLeft':
+        lightboxIndexChange(-1);
+        break;
+      case 'ArrowRight':
+        lightboxIndexChange(+1);
+        break;
+    }
+  } else if (scrollPosBot >= fotosTop && scrollPosTop <= fotosBot) {
     switch (e.key) {
       case 'ArrowLeft':
         indexChange(-1, false, fotosSection.querySelector('.main-image'))
@@ -140,6 +171,8 @@ function indexChangeByKeyboard(e) {
 }
 
 // Light box
+let lightboxIndex;
+
 function lightbox(e) {
   if (!e.target.classList.contains('new-photo')) {
     return
@@ -149,18 +182,40 @@ function lightbox(e) {
   const image = document.querySelector('.lightbox-image');
 
   image.src = e.target.dataset.largesrc;
-
   wrapper.style.display = '';
 
   setTimeout(() => {
     wrapper.classList.remove('hidden');
   }, 200);
+
+  const indexed = image.src;
+  lightboxIndex = allImagesArray.indexOf(indexed);
+
+  console.log(lightboxIndex);
+}
+
+function lightboxIndexChange(num) {
+  const wrapper = document.querySelector('.lightbox');
+
+  lightboxIndex += num;
+
+  if (lightboxIndex < 0) {
+    lightboxIndex = allImagesArray.length - 1;
+  } else if (lightboxIndex > allImagesArray.length - 1) {
+    lightboxIndex = 0;
+  }
+
+  const image = wrapper.querySelector('.new-photo');
+
+  image.src = allImagesArray[lightboxIndex];
+
+  console.log(lightboxIndex);
 }
 
 function lightboxExit(e) {
   const wrapper = document.querySelector('.lightbox');
 
-  if (e.target.classList.contains('lightbox-image')) {
+  if (e.target.classList.contains('lightbox-image') || e.target.closest('.--lightbox-arrow') != null) {
     return;
   }
 
@@ -238,7 +293,7 @@ function jsParallax() {
   dots.forEach(el => {
     let dotsScrolled = scrolled - (el.offsetTop +
       el.offsetParent.offsetTop +
-    el.offsetParent.offsetParent.offsetParent.offsetTop);
+      el.offsetParent.offsetParent.offsetParent.offsetTop);
 
     let dotsTop = -100 - (dotsScrolled * 0.1);
     el.style.top = dotsTop + 'px';
@@ -321,3 +376,6 @@ document.querySelector('.parallax').addEventListener('scroll', function (e) {
   jsParallax();
 });
 document.querySelector('.lightbox').addEventListener('click', lightboxExit);
+
+document.querySelector('.--lightbox-arrow.left').addEventListener('click', () => lightboxIndexChange(-1));
+document.querySelector('.--lightbox-arrow.right').addEventListener('click', () => lightboxIndexChange(+1));
